@@ -91,6 +91,8 @@ class MainWindow:
         self.sidemenu_label.config(text='Vendas')
         self.cont_custos.grid(row=3, column=0,sticky='EW')
 
+    def load_proc_op(self):
+        pass
 
 
 

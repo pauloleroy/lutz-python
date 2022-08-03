@@ -1,6 +1,5 @@
 import tkinter as tk
 import tkinter.messagebox
-from turtle import width
 import customtkinter as ctk
 
 ctk.set_appearance_mode("Dark")
@@ -23,7 +22,7 @@ class App(ctk.CTk):
                 
         self.top_frame = ctk.CTkFrame(master=self, height= App.w*0.08)
         self.top_frame.grid(row=0, column=0, sticky="nswe", padx=10,pady = 5)
-        self.middle_frame = ctk.CTkFrame(master=self, height= App.w*0.05)
+        self.middle_frame = ctk.CTkFrame(master=self, height= App.w*0.08)
         self.middle_frame.grid(row=1, column=0, sticky="nswe", padx=10,pady = 5)
         self.main_frame = ctk.CTkFrame(master=self)
         self.main_frame.grid(row=2, column=0, sticky="nswe", padx=10,pady = 5)
@@ -60,9 +59,10 @@ class App(ctk.CTk):
         self.new_op_button = ctk.CTkButton(self.middle_frame, text='Cadastrar OP', command=lambda: print('Nova OP'))
         self.proc_op_button = ctk.CTkButton(self.middle_frame, text='Procurar OP', command= self.load_proc_op)
         self.new_prod_button = ctk.CTkButton(self.middle_frame, text='Cadastrar Produto', command=lambda: print('Proc Prod'))
-        self.proc_prod_button = ctk.CTkButton(self.middle_frame, text='Procurar Produto', command=lambda: print('Ficha Prod'))
+        self.proc_prod_button = ctk.CTkButton(self.middle_frame, text='Procurar Produto', command=self.load_proc_prod)
         #Compras Buttons
         self.new_mat = ctk.CTkButton(self.middle_frame, text='Novo Material', command=lambda: print(''))
+        self.proc_mat = ctk.CTkButton(self.middle_frame, text='Procurar Material', command=lambda: print(''))
         self.reg_comp = ctk.CTkButton(self.middle_frame, text='Registrar Compra', command=lambda: print(''))
         self.new_forn = ctk.CTkButton(self.middle_frame, text='Cadastrar Fornecedor', command=lambda: print(''))
         self.proc_forn = ctk.CTkButton(self.middle_frame, text='Procurar Fornecedor', command=lambda: print(''))
@@ -83,9 +83,10 @@ class App(ctk.CTk):
         self.clear_side_menu()
         self.sidemenu_label.configure(text='Compras')
         self.new_mat.grid(row=1, column=0, padx =4, pady =3)
-        self.reg_comp.grid(row=1, column=1, padx =4)
-        self.new_forn.grid(row=1, column=2, padx =4)
-        self.proc_forn.grid(row=1, column=3, padx =4)
+        self.proc_mat.grid(row=1, column=1, padx =4)
+        self.reg_comp.grid(row=1, column=2, padx =4)
+        self.new_forn.grid(row=1, column=3, padx =4)
+        self.proc_forn.grid(row=1, column=4, padx =4)
     def load_est(self):
         self.clear_side_menu()
         self.sidemenu_label.configure(text='Estoque')
@@ -96,21 +97,10 @@ class App(ctk.CTk):
         self.sidemenu_label.configure(text='Vendas')
         self.cont_custos.grid(row=3, column=0, padx =4, pady =3)
 
-    def clear_side_menu(self):
-        self.sidemenu_label.configure(text='')
-        self.new_op_button.grid_forget()
-        self.proc_op_button.grid_forget()
-        self.new_prod_button.grid_forget()
-        self.proc_prod_button.grid_forget()
-        self.new_mat.grid_forget()
-        self.reg_comp.grid_forget()
-        self.new_forn.grid_forget()
-        self.proc_forn.grid_forget()
-        self.est_prod.grid_forget()
-        self.est_ins.grid_forget()
-        self.cont_custos.grid_forget()
+
     
     def load_proc_op(self):
+        self.clear_main_frame()
         self.main_frame.grid_rowconfigure(4, weight=1)
         self.main_frame.grid_columnconfigure(4, weight=1)            
         self.top_label = ctk.CTkLabel(master=self.main_frame, text='Procurar OP',text_font=("Roboto Medium", 12))
@@ -157,11 +147,64 @@ class App(ctk.CTk):
         self.list_op = tk.Listbox(master=self.main_frame)
         self.list_op.grid(row=4,column=0,columnspan=9, sticky="nswe",padx = 5,pady=3)
 
+        self.editar_op_button = ctk.CTkButton(master=self.main_frame, text = 'Editar Produto')
+        self.editar_op_button.grid(row=5, column=0, pady =3)
+        self.imp_op_button = ctk.CTkButton(master=self.main_frame, text = 'Imprimir Produto')
+        self.imp_op_button.grid(row=5, column=1)
+
+    def load_proc_prod(self):
+        self.clear_main_frame()
+        
+        self.main_frame.grid_columnconfigure(9,minsize=250)
+        self.main_frame.grid_columnconfigure(3,weight=1)
+        self.main_frame.grid_rowconfigure(4, weight=1)
+
+        self.top_label = ctk.CTkLabel(master=self.main_frame, text='Procurar Produto',text_font=("Roboto Medium", 12))
+        self.top_label.grid(row=0, column=0,columnspan= 4,padx =3, pady =1,sticky="w")
+        self.pesquisa_label = ctk.CTkLabel(master=self.main_frame, text='Pesquisa')
+        self.pesquisa_label.grid(row=1, column=0,padx =3, pady =3)
+        self.proc_por_label = ctk.CTkLabel(master=self.main_frame, text='Procurar Por')
+        self.proc_por_label.grid(row=1, column=4,padx =3)
+        
+        self.pesquisa_eb = ctk.CTkEntry(master=self.main_frame)
+        self.pesquisa_eb.grid(row=2, column=0,columnspan= 4,padx =3, pady =1,sticky="ew")
+        self.proc_por_eb = ctk.CTkComboBox(master=self.main_frame)
+        self.proc_por_eb.grid(row=2, column=4)
+
+        self.uptd_list_button = ctk.CTkButton(master=self.main_frame, text = 'Atualizar Lista')
+        self.uptd_list_button.grid(row=3, column=0, pady =3)
+        self.limp_fil_button = ctk.CTkButton(master=self.main_frame, text = 'Limpar Filtros')
+        self.limp_fil_button.grid(row=3, column=1)
+
+        self.list_op = tk.Listbox(master=self.main_frame)
+        self.list_op.grid(row=4,column=0,columnspan=9, sticky="nswe",padx = 5,pady=3)
+
         self.editar_op_button = ctk.CTkButton(master=self.main_frame, text = 'Editar OP')
         self.editar_op_button.grid(row=5, column=0, pady =3)
         self.imp_op_button = ctk.CTkButton(master=self.main_frame, text = 'Imprimir OP')
         self.imp_op_button.grid(row=5, column=1)
+    
+    def clear_side_menu(self):
+        self.sidemenu_label.configure(text='')
+        self.new_op_button.grid_forget()
+        self.proc_op_button.grid_forget()
+        self.new_prod_button.grid_forget()
+        self.proc_prod_button.grid_forget()
+        self.new_mat.grid_forget()
+        self.proc_mat.grid_forget()
+        self.reg_comp.grid_forget()
+        self.new_forn.grid_forget()
+        self.proc_forn.grid_forget()
+        self.est_prod.grid_forget()
+        self.est_ins.grid_forget()
+        self.cont_custos.grid_forget()
+        self.clear_main_frame()
+        
 
+    def clear_main_frame(self):
+        self.main_frame.destroy()
+        self.main_frame = ctk.CTkFrame(master=self)
+        self.main_frame.grid(row=2, column=0, sticky="nswe", padx=10,pady = 5)
 
 
     def on_closing(self, event=0):

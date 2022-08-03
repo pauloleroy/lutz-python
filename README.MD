@@ -1,5 +1,4 @@
 To do:
-- [ ] SET the columns width fixed values
-- [X] Maximize main window
-- [ ] Ask for the computer resolution and set the parameters for all elements in the app
+- [ ] Finish designing all tabs
+- [ ] Get resolution from system and build reponsive app
 - [ ] Design database
